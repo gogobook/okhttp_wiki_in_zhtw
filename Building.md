@@ -2,7 +2,7 @@ OkHttp requires Java 7 to build and run tests. Runtime compatibility with Java 6
 
 ### Desktop Testing with Maven
 
-Run OkHttp tests on the desktop with Maven. Running HTTP/2 and SPDY tests on the desktop uses [Jetty-ALPN][2] when OpenJDK 8 or [Jetty-NPN][1] when running OpenJDK 7.
+Run OkHttp tests on the desktop with Maven. Running HTTP/2 and SPDY tests on the desktop uses [Jetty-ALPN][1], which adds ALPN support to JDK 7 and JDK 8.
 
 ```
 mvn clean test
@@ -10,7 +10,7 @@ mvn clean test
 
 ### Desktop Testing without Maven
 
-If you're working in an IDE, or in another environment where Maven configuration isn't honored, you'll need to manually enable NPN/ALPN. Add this JVM flag for OpenJDK 8:
+If you're working in an IDE, or in another environment where Maven configuration isn't honored, you'll need to manually enable ALPN. Add this JVM flag for OpenJDK 8:
 ```
 -Xbootclasspath/p:/Users/jwilson/.m2/repository/org/mortbay/jetty/alpn/alpn-boot/8.1.2.v20141202/alpn-boot-8.1.2.v20141202.jar
 ```
@@ -26,7 +26,7 @@ You must substitute `/Users/jwilson/.m2/repository` with the path to your Maven 
 
 OkHttp's test suite creates an in-process HTTPS server. Prior to Android 2.3, SSL server sockets were broken, and so HTTPS tests will time out when run on such devices.
 
-Test on a USB-attached Android using [Vogar][3]. Unfortunately `dx` requires that you build with Java 6, otherwise the test class will be silently omitted from the `.dex` file.
+Test on a USB-attached Android using [Vogar][2]. Unfortunately `dx` requires that you build with Java 6, otherwise the test class will be silently omitted from the `.dex` file.
 
 ```
 mvn clean
@@ -38,6 +38,5 @@ vogar \
     ./samples/guide/src/main/java/com/squareup/okhttp/recipes/SynchronousGet.java
 ```
 
- [1]: https://github.com/jetty-project/jetty-npn
- [2]: https://github.com/jetty-project/jetty-alpn
- [3]: https://code.google.com/p/vogar/
+ [1]: https://github.com/jetty-project/jetty-alpn
+ [2]: https://code.google.com/p/vogar/
