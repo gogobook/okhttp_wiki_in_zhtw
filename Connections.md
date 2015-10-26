@@ -1,6 +1,6 @@
 Although you provide only the URL, OkHttp plans its connection to your webserver using three types: URL, Address, and Route.
 
-#### [URLs](http://developer.android.com/reference/java/net/URL.html)
+#### [URLs](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/HttpUrl.html)
 
 URLs (like `https://github.com/square/okhttp`) are fundamental to HTTP and the Internet. In addition to being a universal, decentralized naming scheme for everything on the web, they also specify how to access web resources.
 
@@ -11,21 +11,21 @@ URLs are abstract:
 
 They're also concrete: each URL identifies a specific path (like `/square/okhttp`) and query (like `?q=sharks&lang=en`). Each webserver hosts many URLs.
 
-#### [Addresses](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/Address.html)
+#### [Addresses](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/Address.html)
 
 Addresses specify a webserver (like `github.com`) and all of the **static** configuration necessary to connect to that server: the port number, HTTPS settings, and preferred network protocols (like HTTP/2 or SPDY).
 
-URLs that share the same address may also share the same underlying TCP socket connection. Sharing a connection has substantial performance benefits: lower latency, higher throughput (due to [TCP slow start](http://www.igvita.com/2011/10/20/faster-web-vs-tcp-slow-start/)) and conserved battery. OkHttp uses a [ConnectionPool](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/ConnectionPool.html) that automatically reuses HTTP/1.x connections and multiplexes HTTP/2 and SPDY connections.
+URLs that share the same address may also share the same underlying TCP socket connection. Sharing a connection has substantial performance benefits: lower latency, higher throughput (due to [TCP slow start](http://www.igvita.com/2011/10/20/faster-web-vs-tcp-slow-start/)) and conserved battery. OkHttp uses a [ConnectionPool](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/ConnectionPool.html) that automatically reuses HTTP/1.x connections and multiplexes HTTP/2 and SPDY connections.
 
-In OkHttp some fields of the address come from the URL (scheme, hostname, port) and the rest come from the [OkHttpClient](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/OkHttpClient.html).
+In OkHttp some fields of the address come from the URL (scheme, hostname, port) and the rest come from the [OkHttpClient](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/OkHttpClient.html).
 
-#### [Routes](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/Route.html)
+#### [Routes](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/Route.html)
 
 Routes supply the **dynamic** information necessary to actually connect to a webserver. This is the specific IP address to attempt (as discovered by a DNS query), the exact proxy server to use (if a [ProxySelector](http://developer.android.com/reference/java/net/ProxySelector.html) is in use), and which version of TLS to negotiate (for HTTPS connections).
 
 There may be many routes for a single address. For example, a webserver that is hosted in multiple datacenters may yield multiple IP addresses in its DNS response.
 
-#### [Connections](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/Connection.html)
+#### [Connections](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/Connection.html)
 
 When you request a URL with OkHttp, here's what it does:
 
