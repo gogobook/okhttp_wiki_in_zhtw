@@ -1,6 +1,6 @@
 We've written some recipes that demonstrate how to solve common problems with OkHttp. Read through them to learn about how everything works together. Cut-and-paste these examples freely; that's what they're for.
 
-#### [Synchronous Get](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/SynchronousGet.java)
+#### [Synchronous Get](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/SynchronousGet.java)
 
 Download a file, print its headers, and print its response body as a string.
 
@@ -26,7 +26,7 @@ The `string()` method on response body is convenient and efficient for small doc
   }
 ```
 
-#### [Asynchronous Get](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/AsynchronousGet.java)
+#### [Asynchronous Get](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/AsynchronousGet.java)
 
 Download a file on a worker thread, and get called back when the response is readable. The callback is made after the response headers are ready. Reading the response body may still block. OkHttp doesn't currently offer asynchronous APIs to receive a response body in parts.
 
@@ -57,7 +57,7 @@ Download a file on a worker thread, and get called back when the response is rea
   }
 ```
 
-#### [Accessing Headers](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/AccessHeaders.java)
+#### [Accessing Headers](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/AccessHeaders.java)
 
 Typically HTTP headers work like a `Map<String, String>`: each field has one value or none. But some headers permit multiple values, like Guava's [Multimap](http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/collect/Multimap.html). For example, it's legal and common for an HTTP response to supply multiple `Vary` headers. OkHttp's APIs attempt to make both cases comfortable.
 
@@ -87,7 +87,7 @@ To visit all headers, use the `Headers` class which supports access by index.
   }
 ```
 
-#### [Posting a String](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/PostString.java)
+#### [Posting a String](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PostString.java)
 
 Use an HTTP POST to send a request body to a service. This example posts a markdown document to a web service that renders markdown as HTML. Because the entire request body is in memory simultaneously, avoid posting large (greater than 1 MiB) documents using this API.
 
@@ -118,7 +118,7 @@ Use an HTTP POST to send a request body to a service. This example posts a markd
   }
 ```
 
-#### [Post Streaming](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/PostStreaming.java)
+#### [Post Streaming](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PostStreaming.java)
 
 Here we `POST` a request body as a stream. The content of this request body is being generated as it's being written. This example streams directly into the [Okio](https://github.com/square/okio) buffered sink. Your programs may prefer an `OutputStream`, which you can get from `BufferedSink.outputStream()`.
 
@@ -163,7 +163,7 @@ Here we `POST` a request body as a stream. The content of this request body is b
   }
 ```
 
-#### [Posting a File](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/PostFile.java)
+#### [Posting a File](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PostFile.java)
 
 It's easy to use a file as a request body.
 
@@ -188,7 +188,7 @@ It's easy to use a file as a request body.
   }
 ```
 
-#### [Posting form parameters](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/PostForm.java)
+#### [Posting form parameters](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PostForm.java)
 
 Use `FormEncodingBuilder` to build a request body that works like an HTML `<form>` tag. Names and values will be encoded using an HTML-compatible form URL encoding.
 
@@ -211,7 +211,7 @@ Use `FormEncodingBuilder` to build a request body that works like an HTML `<form
   }
 ```
 
-#### [Posting a multipart request](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/PostMultipart.java)
+#### [Posting a multipart request](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PostMultipart.java)
 
 `MultipartBuilder` can build sophisticated request bodies compatible with HTML file upload forms. Each part of a multipart request body is itself a request body, and can define its own headers. If present, these headers should describe the part body, such as its `Content-Disposition`. The `Content-Length` and `Content-Type` headers are added automatically if they're available.
 
@@ -246,7 +246,7 @@ Use `FormEncodingBuilder` to build a request body that works like an HTML `<form
   }
 ```
 
-#### [Parse a JSON Response With Gson](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/ParseResponseWithGson.java)
+#### [Parse a JSON Response With Gson](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/ParseResponseWithGson.java)
 
 [Gson](http://code.google.com/p/google-gson/) is a handy API for converting between JSON and Java objects. Here we're using it to decode a JSON response from a GitHub API.
 
@@ -279,7 +279,7 @@ Note that `ResponseBody.charStream()` uses the `Content-Type` response header to
   }
 ```
 
-#### [Response Caching](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/CacheResponse.java)
+#### [Response Caching](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/CacheResponse.java)
 
 To cache responses, you'll need a cache directory that you can read and write to, and a limit on the cache's size. The cache directory should be private, and untrusted applications should not be able to read its contents!
 
@@ -324,7 +324,7 @@ Response caching uses HTTP headers for all configuration. You can add request he
 ```
 To prevent a response from using the cache, use [`CacheControl.FORCE_NETWORK`](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/CacheControl.html#FORCE_NETWORK). To prevent it from using the network, use [`CacheControl.FORCE_CACHE`](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/CacheControl.html#FORCE_CACHE). Be warned: if you use `FORCE_CACHE` and the response requires the network, OkHttp will return a `504 Unsatisfiable Request` response.
 
-#### [Canceling a Call](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/CancelCall.java)
+#### [Canceling a Call](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/CancelCall.java)
 
 Use `Call.cancel()` to stop an ongoing call immediately. If a thread is currently writing a request or reading a response, it will receive an `IOException`. Use this to conserve the network when a call is no longer necessary; for example when your user navigates away from an application. Both synchronous and asynchronous calls can be canceled.
 
@@ -363,7 +363,7 @@ You can cancel multiple requests simultaneously with tags. Assign a tag when you
   }
 ```
 
-#### [Timeouts](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/ConfigureTimeouts.java)
+#### [Timeouts](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/ConfigureTimeouts.java)
 
 Use timeouts to fail a call when its peer is unreachable. Network partitions can be due to client connectivity problems, server availability problems, or anything between. OkHttp supports connect, read, and write timeouts.
 
@@ -387,7 +387,7 @@ Use timeouts to fail a call when its peer is unreachable. Network partitions can
   }
 ```
 
-#### [Per-call Configuration](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/PerCallSettings.java)
+#### [Per-call Configuration](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PerCallSettings.java)
 
 All the HTTP client configuration lives in `OkHttpClient` including proxy settings, timeouts, and caches. When you need to change the configuration of a single call, clone the `OkHttpClient`. This returns a shallow copy that you can customize independently. In the example below, we make one request with a 500 ms timeout and another with a 3000 ms timeout.
 
@@ -421,7 +421,7 @@ All the HTTP client configuration lives in `OkHttpClient` including proxy settin
   }
 ```
 
-#### [Handling authentication](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/com/squareup/okhttp/recipes/Authenticate.java)
+#### [Handling authentication](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/Authenticate.java)
 
 OkHttp can automatically retry unauthenticated requests. When a response is `401 Not Authorized`, an `Authenticator` is asked to supply credentials. Implementations should build a new request that includes the missing credentials. If no credentials are available, return null to skip the retry.
 
