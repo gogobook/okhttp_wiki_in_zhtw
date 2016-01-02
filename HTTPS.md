@@ -3,9 +3,9 @@ OkHttp attempts to balance two competing concerns:
  * **Connectivity** to as many hosts as possible. That includes advanced hosts that run the latest versions of [boringssl](https://boringssl.googlesource.com/boringssl/) and less out of date hosts running older versions of [OpenSSL](https://www.openssl.org/).
  * **Security** of the connection. This includes verification of the remote webserver with certificates and the privacy of data exchanged with strong ciphers.
 
-When negotiating a connection to an HTTPS server, OkHttp needs to know which [TLS versions](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/TlsVersion.html) and [cipher suites](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/CipherSuite.html) to offer. A client that wants to maximize connectivity would include obsolete TLS versions and weak-by-design cipher suites. A strict client that wants to maximize security would be limited to only the latest TLS version and strongest cipher suites.
+When negotiating a connection to an HTTPS server, OkHttp needs to know which [TLS versions](http://square.github.io/okhttp/3.x/okhttp/okhttp3/TlsVersion.html) and [cipher suites](http://square.github.io/okhttp/3.x/okhttp/okhttp3/CipherSuite.html) to offer. A client that wants to maximize connectivity would include obsolete TLS versions and weak-by-design cipher suites. A strict client that wants to maximize security would be limited to only the latest TLS version and strongest cipher suites.
 
-Specific security vs. connectivity decisions are implemented by [ConnectionSpec](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/ConnectionSpec.html). OkHttp includes three built-in connection specs:
+Specific security vs. connectivity decisions are implemented by [ConnectionSpec](http://square.github.io/okhttp/3.x/okhttp/okhttp3/ConnectionSpec.html). OkHttp includes three built-in connection specs:
 
  * `MODERN_TLS` is a secure configuration that connects to modern HTTPS servers.
  * `COMPATIBLE_TLS` is a secure configuration that connects to secure–but not current–HTTPS servers.
@@ -34,18 +34,18 @@ client.setConnectionSpecs(Collections.singletonList(spec));
 
 By default, OkHttp trusts the certificate authorities of the host platform. This strategy maximizes connectivity, but it is subject to certificate authority attacks such as the [2011 DigiNotar attack](http://www.computerworld.com/article/2510951/cybercrime-hacking/hackers-spied-on-300-000-iranians-using-fake-google-certificate.html). It also assumes your HTTPS servers’ certificates are signed by a certificate authority.
 
-Use [CertificatePinner](http://square.github.io/okhttp/2.x/okhttp/com/squareup/okhttp/CertificatePinner.html) to constrain which certificate authorities are trusted. Certificate pinning increases security, but limits your server team’s abilities to update their TLS certificates. **Do not use certificate pinning without the blessing of your server’s TLS administrator!**
+Use [CertificatePinner](http://square.github.io/okhttp/3.x/okhttp/okhttp3/CertificatePinner.html) to constrain which certificate authorities are trusted. Certificate pinning increases security, but limits your server team’s abilities to update their TLS certificates. **Do not use certificate pinning without the blessing of your server’s TLS administrator!**
 
 ```
   public CertificatePinning() {
-    client = new OkHttpClient();
-    client.setCertificatePinner(
-        new CertificatePinner.Builder()
+    client = new OkHttpClient.Builder()
+        .certificatePinner(new CertificatePinner.Builder()
             .add("publicobject.com", "sha1/DmxUShsZuNiqPQsX2Oi9uv2sCnw=")
             .add("publicobject.com", "sha1/SXxoaOSEzPC6BgGmxAt/EAcsajw=")
             .add("publicobject.com", "sha1/blhOM3W9V/bVQhsWAcLYwPU6n24=")
             .add("publicobject.com", "sha1/T5x9IXmcrQ7YuQxXnxoCmeeQ84c=")
-            .build());
+            .build())
+        .build();
   }
 
   public void run() throws Exception {
@@ -70,9 +70,10 @@ The full code sample shows how to replace the host platform’s certificate auth
   private final OkHttpClient client;
 
   public CustomTrust() {
-    client = new OkHttpClient();
     SSLContext sslContext = sslContextForTrustedCertificates(trustedCertificatesInputStream());
-    client.setSslSocketFactory(sslContext.getSocketFactory());
+    client = new OkHttpClient.Builder()
+        .sslSocketFactory(sslContext.getSocketFactory())
+        .build();
   }
 
   public void run() throws Exception {

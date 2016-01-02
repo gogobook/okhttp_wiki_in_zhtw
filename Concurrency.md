@@ -42,11 +42,11 @@ Sometimes there's an action required like calling the application layer or respo
 
 We have 3 different things that we synchronize on.
 
-#### SpdyConnection
+#### FramedConnection
 
 This lock guards internal state of each connection. This lock is never held for blocking operations. That means that we acquire the lock, read or write a few fields and release the lock. No I/O and no application-layer callbacks.
 
-#### SpdyStream
+#### FramedStream
 
 This lock guards the internal state of each stream. As above, it is never held for blocking operations. When we need to hold an application thread to block a read, we use wait/notify on this lock. This works because the lock is released while `wait()` is waiting.
 

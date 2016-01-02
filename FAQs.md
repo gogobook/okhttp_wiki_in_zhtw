@@ -3,11 +3,11 @@
 OkHttp supports some APIs that require Java 7+ or Android API 20+. If you run OkHttp on earlier Android releases, dalvikvm's verifier will warn about the missing methods. This isn't a problem and you can ignore the warnings.
 
 ```
-I/dalvikvm﹕ Could not find method com.squareup.okhttp.internal.huc.HttpURLConnectionImpl.getContentLengthLong, referenced from method com.squareup.okhttp.internal.huc.HttpsURLConnectionImpl.getContentLengthLong
-W/dalvikvm﹕ VFY: unable to resolve virtual method 21498: Lcom/squareup/okhttp/internal/huc/HttpURLConnectionImpl;.getContentLengthLong ()J
+I/dalvikvm﹕ Could not find method okhttp3.internal.huc.HttpURLConnectionImpl.getContentLengthLong, referenced from method okhttp3.internal.huc.HttpsURLConnectionImpl.getContentLengthLong
+W/dalvikvm﹕ VFY: unable to resolve virtual method 21498: Lokhttp3/internal/huc/HttpURLConnectionImpl;.getContentLengthLong ()J
 D/dalvikvm﹕ VFY: replacing opcode 0x6e at 0x0002
-I/dalvikvm﹕ Could not find method com.squareup.okhttp.internal.huc.HttpURLConnectionImpl.getHeaderFieldLong, referenced from method com.squareup.okhttp.internal.huc.HttpsURLConnectionImpl.getHeaderFieldLong
-W/dalvikvm﹕ VFY: unable to resolve virtual method 21503: Lcom/squareup/okhttp/internal/huc/HttpURLConnectionImpl;.getHeaderFieldLong (Ljava/lang/String;J)J
+I/dalvikvm﹕ Could not find method okhttp3.internal.huc.HttpURLConnectionImpl.getHeaderFieldLong, referenced from method okhttp3.internal.huc.HttpsURLConnectionImpl.getHeaderFieldLong
+W/dalvikvm﹕ VFY: unable to resolve virtual method 21503: Lokhttp3/internal/huc/HttpURLConnectionImpl;.getHeaderFieldLong (Ljava/lang/String;J)J
 D/dalvikvm﹕ VFY: replacing opcode 0x6e at 0x0002
 W/dalvikvm﹕ VFY: unable to find class referenced in signature (Ljava/nio/file/Path;)
 W/dalvikvm﹕ VFY: unable to find class referenced in signature ([Ljava/nio/file/OpenOption;)

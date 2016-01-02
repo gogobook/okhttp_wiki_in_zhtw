@@ -190,13 +190,13 @@ It's easy to use a file as a request body.
 
 #### [Posting form parameters](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PostForm.java)
 
-Use `FormEncodingBuilder` to build a request body that works like an HTML `<form>` tag. Names and values will be encoded using an HTML-compatible form URL encoding.
+Use `FormBody.Builder` to build a request body that works like an HTML `<form>` tag. Names and values will be encoded using an HTML-compatible form URL encoding.
 
 ```java
   private final OkHttpClient client = new OkHttpClient();
 
   public void run() throws Exception {
-    RequestBody formBody = new FormEncodingBuilder()
+    RequestBody formBody = new FormBody.Builder()
         .add("search", "Jurassic Park")
         .build();
     Request request = new Request.Builder()
@@ -213,7 +213,7 @@ Use `FormEncodingBuilder` to build a request body that works like an HTML `<form
 
 #### [Posting a multipart request](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PostMultipart.java)
 
-`MultipartBuilder` can build sophisticated request bodies compatible with HTML file upload forms. Each part of a multipart request body is itself a request body, and can define its own headers. If present, these headers should describe the part body, such as its `Content-Disposition`. The `Content-Length` and `Content-Type` headers are added automatically if they're available.
+`MultipartBody.Builder` can build sophisticated request bodies compatible with HTML file upload forms. Each part of a multipart request body is itself a request body, and can define its own headers. If present, these headers should describe the part body, such as its `Content-Disposition`. The `Content-Length` and `Content-Type` headers are added automatically if they're available.
 
 ```java
   private static final String IMGUR_CLIENT_ID = "...";
@@ -223,13 +223,10 @@ Use `FormEncodingBuilder` to build a request body that works like an HTML `<form
 
   public void run() throws Exception {
     // Use the imgur image upload API as documented at https://api.imgur.com/endpoints/image
-    RequestBody requestBody = new MultipartBuilder()
-        .type(MultipartBuilder.FORM)
-        .addPart(
-            Headers.of("Content-Disposition", "form-data; name=\"title\""),
-            RequestBody.create(null, "Square Logo"))
-        .addPart(
-            Headers.of("Content-Disposition", "form-data; name=\"image\""),
+    RequestBody requestBody = new MultipartBody.Builder()
+        .setType(MultipartBody.FORM)
+        .addFormDataPart("title", "Square Logo")
+        .addFormDataPart("image", "logo-square.png",
             RequestBody.create(MEDIA_TYPE_PNG, new File("website/static/logo-square.png")))
         .build();
 
@@ -294,8 +291,9 @@ Response caching uses HTTP headers for all configuration. You can add request he
     int cacheSize = 10 * 1024 * 1024; // 10 MiB
     Cache cache = new Cache(cacheDirectory, cacheSize);
 
-    client = new OkHttpClient();
-    client.setCache(cache);
+    client = new OkHttpClient.Builder()
+        .cache(cache)
+        .build();
   }
 
   public void run() throws Exception {
@@ -322,13 +320,11 @@ Response caching uses HTTP headers for all configuration. You can add request he
     System.out.println("Response 2 equals Response 1? " + response1Body.equals(response2Body));
   }
 ```
-To prevent a response from using the cache, use [`CacheControl.FORCE_NETWORK`](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/CacheControl.html#FORCE_NETWORK). To prevent it from using the network, use [`CacheControl.FORCE_CACHE`](http://square.github.io/okhttp/javadoc/com/squareup/okhttp/CacheControl.html#FORCE_CACHE). Be warned: if you use `FORCE_CACHE` and the response requires the network, OkHttp will return a `504 Unsatisfiable Request` response.
+To prevent a response from using the cache, use [`CacheControl.FORCE_NETWORK`](http://square.github.io/okhttp/3.x/okhttp/okhttp3/CacheControl.html#FORCE_NETWORK). To prevent it from using the network, use [`CacheControl.FORCE_CACHE`](http://square.github.io/okhttp/3.x/okhttp/okhttp3/CacheControl.html#FORCE_CACHE). Be warned: if you use `FORCE_CACHE` and the response requires the network, OkHttp will return a `504 Unsatisfiable Request` response.
 
 #### [Canceling a Call](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/CancelCall.java)
 
 Use `Call.cancel()` to stop an ongoing call immediately. If a thread is currently writing a request or reading a response, it will receive an `IOException`. Use this to conserve the network when a call is no longer necessary; for example when your user navigates away from an application. Both synchronous and asynchronous calls can be canceled.
-
-You can cancel multiple requests simultaneously with tags. Assign a tag when you build a request with `RequestBuilder.tag(tag)`. You can then use `OkHttpClient.cancel(tag)` to cancel all calls with that tag.
 
 ```java
   private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
@@ -371,10 +367,11 @@ Use timeouts to fail a call when its peer is unreachable. Network partitions can
   private final OkHttpClient client;
 
   public ConfigureTimeouts() throws Exception {
-    client = new OkHttpClient();
-    client.setConnectTimeout(10, TimeUnit.SECONDS);
-    client.setWriteTimeout(10, TimeUnit.SECONDS);
-    client.setReadTimeout(30, TimeUnit.SECONDS);
+    client = new OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .build();
   }
 
   public void run() throws Exception {
@@ -389,7 +386,7 @@ Use timeouts to fail a call when its peer is unreachable. Network partitions can
 
 #### [Per-call Configuration](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/PerCallSettings.java)
 
-All the HTTP client configuration lives in `OkHttpClient` including proxy settings, timeouts, and caches. When you need to change the configuration of a single call, clone the `OkHttpClient`. This returns a shallow copy that you can customize independently. In the example below, we make one request with a 500 ms timeout and another with a 3000 ms timeout.
+All the HTTP client configuration lives in `OkHttpClient` including proxy settings, timeouts, and caches. When you need to change the configuration of a single call, call `OkHttpClient.newBuilder()`. This returns a builder that shares the same connection pool, dispatcher, and configuration with the original client. In the example below, we make one request with a 500 ms timeout and another with a 3000 ms timeout.
 
 ```java
   private final OkHttpClient client = new OkHttpClient();
@@ -400,20 +397,24 @@ All the HTTP client configuration lives in `OkHttpClient` including proxy settin
         .build();
 
     try {
-      OkHttpClient cloned = client.clone(); // Clone to make a customized OkHttp for this request.
-      cloned.setReadTimeout(500, TimeUnit.MILLISECONDS);
+      // Copy to customize OkHttp for this request.
+      OkHttpClient copy = client.newBuilder()
+          .readTimeout(500, TimeUnit.MILLISECONDS)
+          .build();
 
-      Response response = cloned.newCall(request).execute();
+      Response response = copy.newCall(request).execute();
       System.out.println("Response 1 succeeded: " + response);
     } catch (IOException e) {
       System.out.println("Response 1 failed: " + e);
     }
 
     try {
-      OkHttpClient cloned = client.clone(); // Clone to make a customized OkHttp for this request.
-      cloned.setReadTimeout(3000, TimeUnit.MILLISECONDS);
+      // Copy to customize OkHttp for this request.
+      OkHttpClient copy = client.newBuilder()
+          .readTimeout(3000, TimeUnit.MILLISECONDS)
+          .build();
 
-      Response response = cloned.newCall(request).execute();
+      Response response = copy.newCall(request).execute();
       System.out.println("Response 2 succeeded: " + response);
     } catch (IOException e) {
       System.out.println("Response 2 failed: " + e);
@@ -428,24 +429,24 @@ OkHttp can automatically retry unauthenticated requests. When a response is `401
 Use `Response.challenges()` to get the schemes and realms of any authentication challenges. When fulfilling a `Basic` challenge, use `Credentials.basic(username, password)` to encode the request header.
 
 ```java
-  private final OkHttpClient client = new OkHttpClient();
+  private final OkHttpClient client;
+
+  public Authenticate() {
+    client = new OkHttpClient.Builder()
+        .authenticator(new Authenticator() {
+          @Override public Request authenticate(Route route, Response response) throws IOException {
+            System.out.println("Authenticating for response: " + response);
+            System.out.println("Challenges: " + response.challenges());
+            String credential = Credentials.basic("jesse", "password1");
+            return response.request().newBuilder()
+                .header("Authorization", credential)
+                .build();
+          }
+        })
+        .build();
+  }
 
   public void run() throws Exception {
-    client.setAuthenticator(new Authenticator() {
-      @Override public Request authenticate(Proxy proxy, Response response) {
-        System.out.println("Authenticating for response: " + response);
-        System.out.println("Challenges: " + response.challenges());
-        String credential = Credentials.basic("jesse", "password1");
-        return response.request().newBuilder()
-            .header("Authorization", credential)
-            .build();
-      }
-
-      @Override public Request authenticateProxy(Proxy proxy, Response response) {
-        return null; // Null indicates no attempt to authenticate.
-      }
-    });
-
     Request request = new Request.Builder()
         .url("http://publicobject.com/secrets/hellosecret.txt")
         .build();

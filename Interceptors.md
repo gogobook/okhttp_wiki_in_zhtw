@@ -2,7 +2,7 @@ Interceptors are a powerful mechanism that can monitor, rewrite, and retry calls
 
 ```java
 class LoggingInterceptor implements Interceptor {
-  @Override public Response intercept(Chain chain) throws IOException {
+  @Override public Response intercept(Interceptor.Chain chain) throws IOException {
     Request request = chain.request();
 
     long t1 = System.nanoTime();
@@ -30,11 +30,12 @@ Interceptors can be chained. Suppose you have both a compressing interceptor and
 
 Interceptors are registered as either _application_ or _network_ interceptors. We'll use the `LoggingInterceptor` defined above to show the difference.
 
-Register an _application_ interceptor by calling `add()` on the `List` returned from `OkHttpClient.interceptors()`:
+Register an _application_ interceptor by calling `addInterceptor()` on `OkHttpClient.Builder`:
 
 ```java
-OkHttpClient client = new OkHttpClient();
-client.interceptors().add(new LoggingInterceptor());
+OkHttpClient client = new OkHttpClient.Builder()
+    .addInterceptor(new LoggingInterceptor())
+    .build();
 
 Request request = new Request.Builder()
     .url("http://www.publicobject.com/helloworld.txt")
@@ -62,11 +63,12 @@ We can see that we were redirected because `response.request().url()` is differe
 
 #### Network Interceptors
 
-Registering a network interceptor is quite similar. Add to the `networkInterceptors()` list instead of the `interceptors()` list:
+Registering a network interceptor is quite similar. Call `addNetworkInterceptor()` instead of `addInterceptor()`:
 
 ```java
-OkHttpClient client = new OkHttpClient();
-client.networkInterceptors().add(new LoggingInterceptor());
+OkHttpClient client = new OkHttpClient.Builder()
+    .addNetworkInterceptor(new LoggingInterceptor())
+    .build();
 
 Request request = new Request.Builder()
     .url("http://www.publicobject.com/helloworld.txt")
@@ -134,7 +136,7 @@ Interceptors can add, remove, or replace request headers. They can also transfor
 ```java
 /** This interceptor compresses the HTTP request body. Many webservers can't handle this! */
 final class GzipRequestInterceptor implements Interceptor {
-  @Override public Response intercept(Chain chain) throws IOException {
+  @Override public Response intercept(Interceptor.Chain chain) throws IOException {
     Request originalRequest = chain.request();
     if (originalRequest.body() == null || originalRequest.header("Content-Encoding") != null) {
       return chain.proceed(originalRequest);
@@ -176,7 +178,7 @@ If you're in a tricky situation and prepared to deal with the consequences, rewr
 ```java
 /** Dangerous interceptor that rewrites the server's cache-control header. */
 private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
-  @Override public Response intercept(Chain chain) throws IOException {
+  @Override public Response intercept(Interceptor.Chain chain) throws IOException {
     Response originalResponse = chain.proceed(chain.request());
     return originalResponse.newBuilder()
         .header("Cache-Control", "max-age=60")

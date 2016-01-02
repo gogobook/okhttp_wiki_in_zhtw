@@ -33,9 +33,9 @@ mvn clean
 mvn package -DskipTests
 vogar \
     --classpath ~/.m2/repository/org/bouncycastle/bcprov-jdk15on/1.48/bcprov-jdk15on-1.48.jar \
-    --classpath ~/.m2/repository/com/squareup/okio/okio/1.0.0/okio-1.0.0.jar \
+    --classpath ~/.m2/repository/com/squareup/okio/okio/1.6.0/okio-1.6.0.jar \
     --classpath okhttp/target/okhttp-2.0.0-SNAPSHOT.jar \
-    ./samples/guide/src/main/java/com/squareup/okhttp/recipes/SynchronousGet.java
+    ./samples/guide/src/main/java/okhttp3/recipes/SynchronousGet.java
 ```
 
  [1]: https://github.com/jetty-project/jetty-alpn
