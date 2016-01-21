@@ -26,8 +26,9 @@ ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
           CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256)
     .build();
 
-OkHttpClient client = ...
-client.setConnectionSpecs(Collections.singletonList(spec));
+OkHttpClient client = new OkHttpClient.Builder() 
+    .setConnectionSpecs(Collections.singletonList(spec))
+    .build();
 ```
 
 #### [Certificate Pinning](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/CertificatePinning.java)
