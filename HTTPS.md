@@ -27,7 +27,7 @@ ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
     .build();
 
 OkHttpClient client = new OkHttpClient.Builder() 
-    .setConnectionSpecs(Collections.singletonList(spec))
+    .connectionSpecs(Collections.singletonList(spec))
     .build();
 ```
 
