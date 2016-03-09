@@ -15,5 +15,6 @@ Here’s some libraries that work nicely with OkHttp.
  * ⬜️ [Retrofit](https://github.com/square/retrofit): Type-safe HTTP client for Android and Java by Square.
  * [Smash](https://github.com/appformation/smash): A Volley-inspired networking library.
  * [Stetho](https://github.com/facebook/stetho): Stetho is a debug bridge for Android applications.
+ * [Thrifty](https://github.com/Microsoft/thrifty): An implementation of Apache Thrift for Android.
  * [Volley-OkHttp-Android](https://github.com/lxdvs/Volley-OkHttp-Android): A fork of Volley with changes to work with OkHttp.
  * ⬜️ [Wire](https://github.com/square/wire): Clean, lightweight protocol buffers for Android and Java.
