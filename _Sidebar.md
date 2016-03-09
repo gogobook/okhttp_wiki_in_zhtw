@@ -13,6 +13,7 @@
    * [1.x](http://square.github.io/okhttp/3.x/okhttp/)
  * [StackOverflow](http://stackoverflow.com/questions/tagged/okhttp?sort=active)
  * [[FAQs]]
+ * [[Works with OkHttp|Works-with-OkHttp]]
 
 **Developing OkHttp**
 
