@@ -4,6 +4,7 @@ Here’s some libraries that work nicely with OkHttp.
  * [Fresco](https://github.com/facebook/fresco): An Android library for managing images and the memory they use.
  * [Glide](https://github.com/bumptech/glide): An image loading and caching library for Android focused on smooth scrolling.
  * [GoogleAppEngineOkHttp](https://github.com/apkelly/GoogleAppEngineOkHttp): An OkHttp Call that works on Google App Engine.
+ * [ModernHttpClient](https://github.com/paulcbetts/ModernHttpClient): Xamarin HTTP API that uses native implementations.
  * ⬜️ [Moshi](https://github.com/square/moshi): A modern JSON library for Android and Java.
  * [Ok2Curl](https://github.com/mrmike/Ok2Curl): Convert OkHttp requests into curl logs.
  * [okhttp-digest](https://github.com/rburgst/okhttp-digest): A digest authenticator for OkHttp.
