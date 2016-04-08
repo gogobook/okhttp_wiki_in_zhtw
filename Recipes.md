@@ -39,15 +39,15 @@ Download a file on a worker thread, and get called back when the response is rea
         .build();
 
     client.newCall(request).enqueue(new Callback() {
-      @Override public void onFailure(Request request, IOException throwable) {
-        throwable.printStackTrace();
+      @Override public void onFailure(Call call, IOException e) {
+        e.printStackTrace();
       }
 
-      @Override public void onResponse(Response response) throws IOException {
+      @Override public void onResponse(Call call, Response response) throws IOException {
         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
         Headers responseHeaders = response.headers();
-        for (int i = 0; i < responseHeaders.size(); i++) {
+        for (int i = 0, size = responseHeaders.size(); i < size; i++) {
           System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
         }
 
