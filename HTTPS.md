@@ -41,7 +41,7 @@ Use [CertificatePinner](http://square.github.io/okhttp/3.x/okhttp/okhttp3/Certif
   public CertificatePinning() {
     client = new OkHttpClient.Builder()
         .certificatePinner(new CertificatePinner.Builder()
-            .add("publicobject.com", "sha1/DmxUShsZuNiqPQsX2Oi9uv2sCnw=")
+            .add("publicobject.com", "sha256/afwiKY3RxoMmLkuRW1l7QsPZTJPwDS2pdDROQjXw8ig=")
             .build())
         .build();
   }
