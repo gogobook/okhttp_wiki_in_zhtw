@@ -12,6 +12,7 @@ Here’s some libraries that work nicely with OkHttp.
  * [OkHttp-Xamarin](https://github.com/paulcbetts/OkHttp-Xamarin): Xamarin bindings for OkHttp.
  * ⬜️ [Okio](https://github.com/square/okio/): A modern I/O API for Java.
  * [OkLog](https://github.com/simonpercic/OkLog): Response logging interceptor for OkHttp. Logs a URL link with URL-encoded response for every OkHttp call.
+ * [OkSocial](https://github.com/yschimke/oksocial/wiki) A curl-like client for social networks and other APIs.
  * [PersistentCookieJar](https://github.com/franmontiel/PersistentCookieJar): A persistent `CookieJar`.
  * ⬜️ [Picasso](https://github.com/square/picasso): A powerful image downloading and caching library for Android.
  * ⬜️ [Retrofit](https://github.com/square/retrofit): Type-safe HTTP client for Android and Java by Square.
