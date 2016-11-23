@@ -1,5 +1,7 @@
 We've written some recipes that demonstrate how to solve common problems with OkHttp. Read through them to learn about how everything works together. Cut-and-paste these examples freely; that's what they're for.
 
+我們寫了一些配方，演示如何解決OkHttp的常見問題。 通過閱讀他們來了解一切如何一起工作。 自由地剪貼這些例子; 這就是他們的目的。
+
 #### [Synchronous Get](https://github.com/square/okhttp/blob/master/samples/guide/src/main/java/okhttp3/recipes/SynchronousGet.java)
 
 Download a file, print its headers, and print its response body as a string.
@@ -7,7 +9,14 @@ Download a file, print its headers, and print its response body as a string.
 The `string()` method on response body is convenient and efficient for small documents. But if the response body is large (greater than 1 MiB), avoid `string()` because it will load the entire document into memory. In that case, prefer to process the body as a stream.
 
 ```java
+  // 實例化OkHttpClient
   private final OkHttpClient client = new OkHttpClient();
+  // 執行request的方法用Exception包起來
+  // 1. 先建立request
+  // 2. 用實例化OkHttpClient的物件執行request，並用Response實例來接收結果。
+  // 3. 如果response不是成功的，則拋出錯誤。
+  // 4. 取出response的headers資料。
+  // 5. 處理response的body。
 
   public void run() throws Exception {
     Request request = new Request.Builder()
@@ -37,7 +46,7 @@ Download a file on a worker thread, and get called back when the response is rea
     Request request = new Request.Builder()
         .url("http://publicobject.com/helloworld.txt")
         .build();
-
+    // 這裡使用enqueue進行非同步抓取。    
     client.newCall(request).enqueue(new Callback() {
       @Override public void onFailure(Call call, IOException e) {
         e.printStackTrace();
@@ -62,6 +71,8 @@ Download a file on a worker thread, and get called back when the response is rea
 Typically HTTP headers work like a `Map<String, String>`: each field has one value or none. But some headers permit multiple values, like Guava's [Multimap](http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/collect/Multimap.html). For example, it's legal and common for an HTTP response to supply multiple `Vary` headers. OkHttp's APIs attempt to make both cases comfortable.
 
 When writing request headers, use `header(name, value)` to set the only occurrence of `name` to `value`. If there are existing values, they will be removed before the new value is added. Use `addHeader(name, value)` to add a header without removing the headers already present.
+
+在寫入請求標頭時，使用標頭（名稱，值）以設置唯一出現的名稱-值。 如果有現有值，則在添加新值之前將刪除它們。 使用addHeader（name，value）添加頭，而不刪除已經存在的頭。
 
 When reading response a header, use `header(name)` to return the _last_ occurrence of the named value. Usually this is also the only occurrence! If no value is present, `header(name)` will return null. To read all of a field's values as a list, use `headers(name)`.
 
